@@ -39,10 +39,16 @@ struct HomeView: View {
                 Image(systemName: "arrow.clockwise")
                     .resizable()
                     .frame(width: 28, height: 32)
+                    .onTapGesture {
+                        
+                    }
                 
                 Image(systemName: "heart")
                     .resizable()
                     .frame(width: 28, height: 28)
+                    .onTapGesture {
+                        
+                    }
             }
             .padding(.top)
             
