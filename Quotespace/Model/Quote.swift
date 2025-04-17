@@ -8,7 +8,7 @@
 import Foundation
 
 struct Quote: Codable {
-    var q: String
-    var a: String
-    var h: String
+    var id: Int
+    var quote: String
+    var author: String
 }

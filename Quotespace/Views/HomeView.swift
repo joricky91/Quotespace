@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct HomeView: View {
+    @State private var viewModel = HomeViewModel()
+    
     var body: some View {
         VStack {
             HStack {
@@ -25,12 +27,12 @@ struct HomeView: View {
             Spacer()
             
             VStack(alignment: .center) {
-                Text("\"The important thing is not to stop questioning. Curiosity has its own reason for existing.\"")
+                Text("\"\(viewModel.randomQuote?.quote ?? "")\"")
                     .font(.largeTitle)
                     .multilineTextAlignment(.center)
                     .padding(.bottom)
                 
-                Text("- Albert Einstein -")
+                Text("- \(viewModel.randomQuote?.author ?? "") -")
                     .font(.title3)
             }
             .padding(.bottom)
@@ -40,7 +42,7 @@ struct HomeView: View {
                     .resizable()
                     .frame(width: 28, height: 32)
                     .onTapGesture {
-                        
+                        viewModel.getRandomQuote()
                     }
                 
                 Image(systemName: "heart")
@@ -55,6 +57,9 @@ struct HomeView: View {
             Spacer()
         }
         .padding()
+        .onAppear {
+            viewModel.getRandomQuote()
+        }
     }
 }
 
