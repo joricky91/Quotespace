@@ -6,9 +6,12 @@
 //
 
 import SwiftUI
+import SwiftData
 
 struct HomeView: View {
+    @Environment(\.modelContext) private var modelContext
     @State private var viewModel = HomeViewModel()
+    @Query var items: [LocalQuote]
     
     var body: some View {
         VStack {
@@ -49,7 +52,7 @@ struct HomeView: View {
                     .resizable()
                     .frame(width: 28, height: 28)
                     .onTapGesture {
-                        
+                        viewModel.saveQuotesToLocal(modelContext: modelContext)
                     }
             }
             .padding(.top)
@@ -63,6 +66,6 @@ struct HomeView: View {
     }
 }
 
-#Preview {
-    HomeView()
-}
+//#Preview {
+//    HomeView()
+//}

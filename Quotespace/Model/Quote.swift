@@ -11,4 +11,10 @@ struct Quote: Codable {
     var id: Int
     var quote: String
     var author: String
+    
+    func toLocalQuote() -> LocalQuote {
+        let local = LocalQuote(quote: quote,
+                               author: author)
+        return local
+    }
 }

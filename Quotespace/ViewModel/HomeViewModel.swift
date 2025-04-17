@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import SwiftData
 
 @MainActor
 @Observable class HomeViewModel {
@@ -20,6 +21,14 @@ import Foundation
             } catch {
                 print(error.localizedDescription)
             }
+        }
+    }
+    
+    func saveQuotesToLocal(modelContext: ModelContext) {
+        let quote = randomQuote?.toLocalQuote()
+        if let quote = quote {
+            SwiftDataManager.shared.addToLocal(context: modelContext,
+                                               data: quote)
         }
     }
 
