@@ -11,55 +11,63 @@ import SwiftData
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
     @State private var viewModel = HomeViewModel()
-    @Query var items: [LocalQuote]
+    @State private var navigateToFavorite: Bool = false
     
     var body: some View {
-        VStack {
-            HStack {
-                Text("quotespace")
-                    .font(.title)
-                    .fontWeight(.light)
+        NavigationStack {
+            VStack {
+                HStack {
+                    Text("quotespace")
+                        .font(.title)
+                        .fontWeight(.light)
+                    
+                    Spacer()
+                    
+                    Image(systemName: "heart")
+                        .resizable()
+                        .frame(width: 24, height: 24)
+                        .onTapGesture {
+                            navigateToFavorite = true
+                        }
+                }
                 
                 Spacer()
                 
-                Image(systemName: "heart")
-                    .resizable()
-                    .frame(width: 24, height: 24)
-            }
-            
-            Spacer()
-            
-            VStack(alignment: .center) {
-                Text("\"\(viewModel.randomQuote?.quote ?? "")\"")
-                    .font(.largeTitle)
-                    .multilineTextAlignment(.center)
-                    .padding(.bottom)
+                VStack(alignment: .center) {
+                    Text("\"\(viewModel.randomQuote?.quote ?? "")\"")
+                        .font(.largeTitle)
+                        .multilineTextAlignment(.center)
+                        .padding(.bottom)
+                    
+                    Text("- \(viewModel.randomQuote?.author ?? "") -")
+                        .font(.title3)
+                }
+                .padding(.bottom)
                 
-                Text("- \(viewModel.randomQuote?.author ?? "") -")
-                    .font(.title3)
-            }
-            .padding(.bottom)
-            
-            HStack(spacing: 16) {
-                Image(systemName: "arrow.clockwise")
-                    .resizable()
-                    .frame(width: 28, height: 32)
-                    .onTapGesture {
-                        viewModel.getRandomQuote()
-                    }
+                HStack(spacing: 16) {
+                    Image(systemName: "arrow.clockwise")
+                        .resizable()
+                        .frame(width: 28, height: 32)
+                        .onTapGesture {
+                            viewModel.getRandomQuote()
+                        }
+                    
+                    Image(systemName: "heart")
+                        .resizable()
+                        .frame(width: 28, height: 28)
+                        .onTapGesture {
+                            viewModel.saveQuotesToLocal(modelContext: modelContext)
+                        }
+                }
+                .padding(.top)
                 
-                Image(systemName: "heart")
-                    .resizable()
-                    .frame(width: 28, height: 28)
-                    .onTapGesture {
-                        viewModel.saveQuotesToLocal(modelContext: modelContext)
-                    }
+                Spacer()
             }
-            .padding(.top)
-            
-            Spacer()
+            .padding()
+            .navigationDestination(isPresented: $navigateToFavorite) {
+                FavoritesView()
+            }
         }
-        .padding()
         .onAppear {
             viewModel.getRandomQuote()
         }
