@@ -44,7 +44,7 @@ struct HomeView: View {
                 }
                 .padding(.bottom)
                 
-                HStack(spacing: 16) {
+                HStack(spacing: 24) {
                     Image(systemName: "arrow.clockwise")
                         .resizable()
                         .frame(width: 28, height: 32)
@@ -54,11 +54,17 @@ struct HomeView: View {
                     
                     Image(systemName: viewModel.systemIcon)
                         .resizable()
-                        .frame(width: 28, height: 28)
+                        .frame(width: 32, height: 32)
                         .foregroundStyle(viewModel.iconColor)
                         .onTapGesture {
                             viewModel.saveQuotesToLocal(modelContext: modelContext)
                         }
+                    
+                    ShareLink(item: viewModel.randomQuote?.quote ?? "") {
+                        Image(systemName: "square.and.arrow.up")
+                            .resizable()
+                            .frame(width: 28, height: 36)
+                    }
                 }
                 .padding(.top)
                 

@@ -14,7 +14,7 @@ import SwiftUI
     
     var randomQuote: Quote?
     var systemIcon: String = "heart"
-    var iconColor: Color = .black
+    var iconColor: Color = .primary
     
     func getRandomQuote(modelContext: ModelContext) {
         Task {
@@ -59,7 +59,7 @@ import SwiftUI
     
     func resetIcon() {
         systemIcon = "heart"
-        iconColor = .black
+        iconColor = .primary
     }
 
 }
