@@ -12,6 +12,17 @@ class SwiftDataManager {
     
     static let shared = SwiftDataManager()
     
+    func fetchOne<T: PersistentModel>(context: ModelContext,
+                                      predicate: Predicate<T>) -> T? {
+        do {
+            let descriptor = FetchDescriptor<T>(predicate: predicate)
+            return try context.fetch(descriptor).first
+        } catch {
+            print("❌ Failed to fetch data: \(error)")
+            return nil
+        }
+    }
+    
     func addToLocal(context: ModelContext, data: any PersistentModel) {
         do {
             context.insert(data)

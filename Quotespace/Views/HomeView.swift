@@ -49,12 +49,13 @@ struct HomeView: View {
                         .resizable()
                         .frame(width: 28, height: 32)
                         .onTapGesture {
-                            viewModel.getRandomQuote()
+                            viewModel.getRandomQuote(modelContext: modelContext)
                         }
                     
-                    Image(systemName: "heart")
+                    Image(systemName: viewModel.systemIcon)
                         .resizable()
                         .frame(width: 28, height: 28)
+                        .foregroundStyle(viewModel.iconColor)
                         .onTapGesture {
                             viewModel.saveQuotesToLocal(modelContext: modelContext)
                         }
@@ -69,7 +70,7 @@ struct HomeView: View {
             }
         }
         .onAppear {
-            viewModel.getRandomQuote()
+            viewModel.getRandomQuote(modelContext: modelContext)
         }
     }
 }
