@@ -8,14 +8,13 @@
 import Foundation
 
 struct Quote: Codable {
-    var id: Int
-    var quote: String
-    var author: String
+    var q: String
+    var a: String
+    var h: String
     
     func toLocalQuote() -> LocalQuote {
-        let local = LocalQuote(id: id,
-                               quote: quote,
-                               author: author,
+        let local = LocalQuote(quote: q,
+                               author: a,
                                isFavorite: true)
         return local
     }

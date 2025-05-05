@@ -7,6 +7,7 @@
 
 import SwiftUI
 import SwiftData
+import UserNotifications
 
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
@@ -34,12 +35,12 @@ struct HomeView: View {
                 Spacer()
                 
                 VStack(alignment: .center) {
-                    Text("\"\(viewModel.randomQuote?.quote ?? "")\"")
+                    Text("\"\(viewModel.randomQuote?.q ?? "")\"")
                         .font(.largeTitle)
                         .multilineTextAlignment(.center)
                         .padding(.bottom)
                     
-                    Text("- \(viewModel.randomQuote?.author ?? "") -")
+                    Text("- \(viewModel.randomQuote?.a ?? "") -")
                         .font(.title3)
                 }
                 .padding(.bottom)
@@ -60,7 +61,7 @@ struct HomeView: View {
                             viewModel.saveQuotesToLocal(modelContext: modelContext)
                         }
                     
-                    ShareLink(item: viewModel.randomQuote?.quote ?? "") {
+                    ShareLink(item: viewModel.randomQuote?.q ?? "") {
                         Image(systemName: "square.and.arrow.up")
                             .resizable()
                             .frame(width: 28, height: 36)
@@ -77,7 +78,37 @@ struct HomeView: View {
         }
         .onAppear {
             viewModel.getRandomQuote(modelContext: modelContext)
+            askNotificationPermission()
         }
+    }
+    
+    func askNotificationPermission() {
+        UNUserNotificationCenter.current().requestAuthorization(options: [.alert, .badge, .sound]) { success, error in
+            if success {
+                print("Nice! Now you can get daily quotes notification!")
+                generateLocalNotification()
+            } else {
+                print(error?.localizedDescription ?? "")
+            }
+        }
+    }
+    
+    func generateLocalNotification() {
+        let content = UNMutableNotificationContent()
+        content.title = "Monkey D. Luffy"
+        content.body = "I'm gonna be the king of the pirates!"
+        content.sound = .default
+        
+        var datComp = DateComponents()
+        datComp.hour = 13
+        datComp.minute = 46
+        
+        let trigger = UNCalendarNotificationTrigger(dateMatching: datComp, repeats: false)
+        let request = UNNotificationRequest(identifier: UUID().uuidString,
+                                            content: content,
+                                            trigger: trigger)
+        
+        UNUserNotificationCenter.current().add(request)
     }
 }
 

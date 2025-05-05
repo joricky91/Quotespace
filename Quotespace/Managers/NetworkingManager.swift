@@ -11,7 +11,7 @@ class NetworkingManager {
     
     static let shared = NetworkingManager()
     
-    private let baseURL = "https://dummyjson.com/"
+    private let baseURL = "https://zenquotes.io/api/"
     private let decoder = JSONDecoder()
     private let session = URLSession.shared
     

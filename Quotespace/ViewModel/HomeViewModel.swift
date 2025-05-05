@@ -19,10 +19,10 @@ import SwiftUI
     func getRandomQuote(modelContext: ModelContext) {
         Task {
             do {
-                let random: Quote = try await NetworkingManager.shared.getData(from: .random)
-                self.randomQuote = random
+                let random: [Quote] = try await NetworkingManager.shared.getData(from: .random)
+                self.randomQuote = random.first
                 getCurrentLocalQuotes(modelContext: modelContext,
-                                      id: random.id)
+                                      quote: random.first?.q ?? "")
             } catch {
                 print(error.localizedDescription)
             }
@@ -38,9 +38,9 @@ import SwiftUI
         }
     }
     
-    func getCurrentLocalQuotes(modelContext: ModelContext, id: Int) {
+    func getCurrentLocalQuotes(modelContext: ModelContext, quote: String) {
         let predicate = #Predicate<LocalQuote> {
-            $0.id == id
+            $0.quote == quote
         }
         
         let localQuote = SwiftDataManager.shared.fetchOne(context: modelContext,

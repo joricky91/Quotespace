@@ -14,9 +14,9 @@ enum Endpoints {
     var path: String {
         switch self {
         case .random:
-            "quotes/random"
+            "random"
         case .today:
-            "quotes/1"
+            "today"
         }
     }
 }
