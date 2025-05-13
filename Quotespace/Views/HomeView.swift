@@ -8,6 +8,7 @@
 import SwiftUI
 import SwiftData
 import UserNotifications
+import BackgroundTasks
 
 struct HomeView: View {
     @Environment(\.modelContext) private var modelContext
@@ -95,13 +96,13 @@ struct HomeView: View {
     
     func generateLocalNotification() {
         let content = UNMutableNotificationContent()
-        content.title = "Monkey D. Luffy"
-        content.body = "I'm gonna be the king of the pirates!"
+        content.title = "Daily Quotes"
+        content.body = "Check your daily quotes now to help you though the day!"
         content.sound = .default
         
         var datComp = DateComponents()
-        datComp.hour = 13
-        datComp.minute = 46
+        datComp.hour = 07
+        datComp.minute = 00
         
         let trigger = UNCalendarNotificationTrigger(dateMatching: datComp, repeats: false)
         let request = UNNotificationRequest(identifier: UUID().uuidString,
@@ -115,3 +116,21 @@ struct HomeView: View {
 //#Preview {
 //    HomeView()
 //}
+
+extension Date {
+    static func createCustomDate(hour: Int, minute: Int) -> Date {
+        let now = Date()
+        let calendar = Calendar.current
+        let today = calendar.startOfDay(for: now)
+        
+        var components = calendar.dateComponents([.year, .month, .day], from: today)
+        components.hour = hour
+        components.minute = minute
+
+        if let customDate = calendar.date(from: components) {
+            return customDate
+        } else {
+            return now
+        }
+    }
+}
